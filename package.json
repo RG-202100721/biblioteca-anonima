@@ -1,0 +1,24 @@
+{
+  "name": "biblioteca-anonima",
+  "version": "1.0.0",
+  "description": "projeto para a UC PIS",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm update",
+    "start": "node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RG-202100721/biblioteca-anonima.git"
+  },
+  "author": "grupo de 3 alunos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RG-202100721/biblioteca-anonima/issues"
+  },
+  "homepage": "https://github.com/RG-202100721/biblioteca-anonima#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
