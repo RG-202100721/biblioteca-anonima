@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 //criação da conexão ao servidor mysql
 exports.start = () => {
-    dbconfig = {
+    var dbconfig = {
         //credenciais do servidor mysql
         connectionLimit: 100,
         host: "remotemysql.com",
@@ -17,14 +17,14 @@ exports.start = () => {
     pool = mysql.createPool(dbconfig);
     pool.getConnection((err, con) => {
 		if (err) console.log('Error in DB connection (start): ' + err);
-        console.log("Connected!");
+        console.log("Connected to DB!");
         con.release();
 	});
 };
 
-//criação da base de dados a partir do ficheiro database.sql
+//---------developer command (to delete in final delivary)---------//
 exports.create = () => {
-    var sql = fs.readFile('./scripts/database.sql').toString().replace(/\s+/g, ' ').split("\r\n").join('');
+    var sql = fs.readFile('./database.sql').toString().replace(/\s+/g, ' ').split("\r\n").join('');
     pool.getConnection((err, con) => {
 		if (err) {
 			con.release();
@@ -39,6 +39,7 @@ exports.create = () => {
         }
 	});
 };
+//-----------------------------------------------------------------//
 
 //faz uma query à base de dados (select, update, insert and delete)
 exports.query = (sql, callback) => {
