@@ -7,7 +7,7 @@ const DB = require("./DB");
 
 //rotas de interação com a base de dados
 router.get("/getBooks", (req, res) => {
-    var sql = "SELECT * FROM 'Lista_Livros'";
+    var sql = "SELECT * FROM Lista_Livros";
 
     DB.query(sql, (err, result) => {
    		if (err) throw err;

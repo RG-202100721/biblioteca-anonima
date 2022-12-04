@@ -4,6 +4,15 @@ const mysql = require('mysql');
 //criação da conexão ao servidor mysql
 exports.start = () => {
     var dbconfig = {
+        /*
+        connectionLimit: 100,
+        host: "localhost",
+        port: 3306,
+        database: "prog_info_projeto",
+        user: "root",
+        password: "",
+        multipleStatements: true
+        */
         //credenciais do servidor mysql
         connectionLimit: 100,
         host: "remotemysql.com",
@@ -24,7 +33,7 @@ exports.start = () => {
 
 //---------developer command (to delete in final delivary)---------//
 exports.create = () => {
-    var sql = fs.readFile('./database.sql').toString().replace(/\s+/g, ' ').split("\r\n").join('');
+    var sql = fs.readFileSync('./routes/database.sql').toString().replace(/\s+/g, ' ').split("\r\n").join('');
     pool.getConnection((err, con) => {
 		if (err) {
 			con.release();
