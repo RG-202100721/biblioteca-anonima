@@ -7,7 +7,28 @@ const DB = require("./DB");
 
 //rotas de interação com a base de dados
 router.get("/getBooks", (req, res) => {
-    var sql = "SELECT * FROM Lista_Livros";
+    var sql = `
+    SELECT 
+    L.ID AS "ID", 
+    L.Titulo AS "Título",
+    L.ISBN AS "ISBN",
+    L.Numero_Paginas AS "Número de Páginas",
+    GROUP_CONCAT(DISTINCT A.Nome SEPARATOR ', ') AS "Autor(es)",
+    GROUP_CONCAT(DISTINCT C.Nome SEPARATOR ', ') AS "Categoria(s)",
+    E.Nome AS "Editora",
+    L.Capa AS "Capa"
+    FROM Livro AS L
+    LEFT JOIN Livro_Categoria AS LC
+    ON L.ID = LC.IDLivro
+    LEFT JOIN Categoria AS C
+    ON LC.IDCategoria = C.ID
+    INNER JOIN Editora AS E
+    ON E.ID = L.IDEditora
+    RIGHT JOIN Livro_Autor AS LA
+    ON L.ID = LA.IDLivro
+    RIGHT JOIN Autor AS A
+    ON LA.IDAutor = A.ID 
+    GROUP BY L.ID;`;
 
     DB.query(sql, (err, result) => {
    		if (err) throw err;
