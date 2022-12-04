@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Autor (
   Nome varchar(255) NOT NULL UNIQUE, 
   Pais varchar(255) NOT NULL,
   PRIMARY KEY (ID)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Editora;
 CREATE TABLE IF NOT EXISTS Editora (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Editora (
   Nome varchar(255) NOT NULL UNIQUE, 
   Pais varchar(255) NOT NULL,
   PRIMARY KEY (ID)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Livro;
 CREATE TABLE IF NOT EXISTS Livro (
@@ -39,15 +39,17 @@ CREATE TABLE IF NOT EXISTS Livro (
   Titulo varchar(255) NOT NULL UNIQUE, 
   ISBN varchar(255) NOT NULL UNIQUE,
   Numero_Paginas int NOT NULL,
+  IDEditora int NOT NULL,
   Capa varchar(255) NOT NULL UNIQUE,
-  PRIMARY KEY (ID)
-) ENGINE=InnoDB;
+  PRIMARY KEY (ID),
+  FOREIGN KEY (IDEditora) REFERENCES Editora(ID) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Categoria;
 CREATE TABLE IF NOT EXISTS Categoria (
   ID int PRIMARY KEY AUTO_INCREMENT,
   Nome varchar(25) NOT NULL UNIQUE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Livro_Autor;
 CREATE TABLE Livro_Autor (
@@ -55,15 +57,7 @@ CREATE TABLE Livro_Autor (
     IDAutor INT NOT NULL,
     FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (IDAutor) REFERENCES Autor(ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-DROP TABLE IF EXISTS Editora_Livro;
-CREATE TABLE Editora_Livro (
-    IDEditora  INT NOT NULL,
-    IDLivro INT NOT NULL,
-    FOREIGN KEY (IDEditora) REFERENCES Editora(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Livro_Categoria;
 CREATE TABLE Livro_Categoria (
@@ -71,7 +65,7 @@ CREATE TABLE Livro_Categoria (
     IDCategoria INT NOT NULL,
     FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (IDCategoria) REFERENCES Categoria(ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 INSERT INTO Autor (Nome, Pais) VALUES
 ('J.D. Salinger', 'USA'),
@@ -89,14 +83,14 @@ INSERT INTO Editora (Nome, Pais) VALUES
 ('Thomas Egerton', 'UK'),
 ('Wiley', 'USA');
 
-INSERT INTO Livro (Titulo, ISBN, Numero_Paginas, Capa) VALUES
-('The Catcher in the Rye', "978-0241950425", 240, 'https://m.media-amazon.com/images/I/91HPG31dTwL.jpg'),
-('Nine Stories', '978-0316769501', 208, 'https://m.media-amazon.com/images/I/31x+MY57lfL._AC_SY780_.jpg'),
-('Franny and Zooey', '978-0316769495', 176, 'https://m.media-amazon.com/images/I/31Jy2ycRn8L._SX400_BO1,204,203,200_.jpg'),
-('The Great Gatsby', '979-8745274824', 110, 'https://kbimages1-a.akamaihd.net/c5742da9-e63f-4ed5-acb6-074fab5e3f41/1200/1200/False/the-great-gatsby-11.jpg'),
-('Tender is the Night', '978-0684801544', 320, 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Tender_Is_the_Night_%281934_1st_ed_dust_jacket%29.jpg/727px-Tender_Is_the_Night_%281934_1st_ed_dust_jacket%29.jpg'),
-('Pride and Prejudice', '978-1503290563', 259, 'https://m.media-amazon.com/images/I/41xCxs0B+cL.jpg'),
-('Professional ASP.NET 4.5 in C# and VB', "978-1118311820", 1440, 'https://books2search.com/storage/bookimages/4/5/0/2/9781118332054.jpg');
+INSERT INTO Livro (Titulo, ISBN, Numero_Paginas, IDEditora, Capa) VALUES
+('The Catcher in the Rye', "978-0241950425", 240, 1, 'https://m.media-amazon.com/images/I/91HPG31dTwL.jpg'),
+('Nine Stories', '978-0316769501', 208, 1, 'https://m.media-amazon.com/images/I/31x+MY57lfL._AC_SY780_.jpg'),
+('Franny and Zooey', '978-0316769495', 176, 1, 'https://m.media-amazon.com/images/I/31Jy2ycRn8L._SX400_BO1,204,203,200_.jpg'),
+('The Great Gatsby', '979-8745274824', 110, 2, 'https://kbimages1-a.akamaihd.net/c5742da9-e63f-4ed5-acb6-074fab5e3f41/1200/1200/False/the-great-gatsby-11.jpg'),
+('Tender is the Night', '978-0684801544', 320, 2, 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Tender_Is_the_Night_%281934_1st_ed_dust_jacket%29.jpg/727px-Tender_Is_the_Night_%281934_1st_ed_dust_jacket%29.jpg'),
+('Pride and Prejudice', '978-1503290563', 259, 3, 'https://m.media-amazon.com/images/I/41xCxs0B+cL.jpg'),
+('Professional ASP.NET 4.5 in C# and VB', "978-1118311820", 1440, 4, 'https://books2search.com/storage/bookimages/4/5/0/2/9781118332054.jpg');
 
 INSERT INTO Categoria (Nome) VALUES
 ('Romance'),
@@ -136,15 +130,6 @@ INSERT INTO Livro_Autor (IDLivro, IDAutor) VALUES
 (7, 7),
 (7, 8);
 
-INSERT INTO Editora_Livro (IDEditora, IDLivro) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(2, 4),
-(2, 5),
-(3, 6),
-(4, 7);
-
 INSERT INTO Livro_Categoria (IDLivro, IDCategoria) VALUES
 (1, 21),
 (1, 4),
@@ -161,3 +146,27 @@ INSERT INTO Livro_Categoria (IDLivro, IDCategoria) VALUES
 (6, 1),
 (6, 4),
 (7, 23);
+
+CREATE OR REPLACE VIEW Lista_Livros
+AS 
+SELECT 
+L.ID AS "ID", 
+L.Titulo AS "Título",
+L.ISBN AS "ISBN",
+L.Numero_Paginas AS "Número de Páginas",
+GROUP_CONCAT(DISTINCT A.Nome SEPARATOR ', ') AS "Autor(es)",
+GROUP_CONCAT(DISTINCT C.Nome SEPARATOR ', ') AS "Categoria(s)",
+E.Nome AS "Editora",
+L.Capa AS "Capa"
+FROM Livro AS L
+LEFT JOIN Livro_Categoria AS LC
+ON L.ID = LC.IDLivro
+LEFT JOIN Categoria AS C
+ON LC.IDCategoria = C.ID
+INNER JOIN Editora AS E
+ON E.ID = L.IDEditora
+RIGHT JOIN Livro_Autor AS LA
+ON L.ID = LA.IDLivro
+RIGHT JOIN Autor AS A
+ON LA.IDAutor = A.ID 
+GROUP BY L.ID;
