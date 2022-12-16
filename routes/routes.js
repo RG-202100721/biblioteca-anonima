@@ -78,7 +78,7 @@ router.put("/edit", (req, res) => {
         else res.json({ message: `Database row updated! [Query: ${sql}]` });
 	});
 });
-router.post("/delete", (req, res) => {
+router.delete("/delete", (req, res) => {
     var sql = `DELETE FROM ${req.body["Tabela"]} WHERE ID = ${req.body["ID"]};`;
     dbcon.query(sql, (err, result) => {
         if (err) { res.json({ data: '0 results.' }); throw err; }
