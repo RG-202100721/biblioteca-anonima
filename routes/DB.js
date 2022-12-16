@@ -31,25 +31,6 @@ exports.start = () => {
 	});
 };
 
-//---------developer command (to delete in final delivary)---------//
-exports.create = () => {
-    var sql = fs.readFileSync('./routes/database.sql').toString().replace(/\s+/g, ' ').split("\r\n").join('');
-    pool.getConnection((err, con) => {
-		if (err) {
-			con.release();
-	  		console.log('Error in DB connection (create): ' + err);
-	  	}
-        else {
-            con.query(sql, (err2, result) => {
-                if (err) console.log('Error in DB query (create): ' + err2);
-                console.log("Database created!");
-                con.release();
-            });
-        }
-	});
-};
-//-----------------------------------------------------------------//
-
 //faz uma query à base de dados (select, update, insert and delete)
 exports.query = (sql, callback) => {
     pool.getConnection((err, con) => {
