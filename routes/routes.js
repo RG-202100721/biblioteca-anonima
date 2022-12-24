@@ -42,7 +42,7 @@ router.post("/create", (req, res) => {
                                 });
                                 message += `Database row inserted! [Query: ${sql}]`;
                                 dbcon.query(sql, (err, result) => {
-                                    if (err) { res.json({ data: '0 results.' }); throw err; }
+                                    if (err) { res.json({ message: '0 results.' }); throw err; }
                                     else res.json({ message: message });
                                 });
                             }
@@ -57,7 +57,7 @@ router.post("/create", (req, res) => {
                     default: sql += `(${id}, '${req.body["Nome"]}');`; break;
                 }
                 dbcon.query(sql, (err, result) => {
-                    if (err) { res.json({ data: '0 results.' }); throw err; }
+                    if (err) { res.json({ message: '0 results.' }); throw err; }
                     else res.json({ message: `Database row inserted! [Query: ${sql}]` });
                 });
             }
@@ -74,14 +74,14 @@ router.put("/edit", (req, res) => {
     sql += ` WHERE ID = ${req.body["ID"]};`
 
     dbcon.query(sql, (err, result) => {
-   		if (err) { res.json({ data: '0 results.' }); throw err; }
+   		if (err) { res.json({ message: '0 results.' }); throw err; }
         else res.json({ message: `Database row updated! [Query: ${sql}]` });
 	});
 });
 router.delete("/delete", (req, res) => {
     var sql = `DELETE FROM ${req.body["Tabela"]} WHERE ID = ${req.body["ID"]};`;
     dbcon.query(sql, (err, result) => {
-        if (err) { res.json({ data: '0 results.' }); throw err; }
+        if (err) { res.json({ message: '0 results.' }); throw err; }
         else res.json({ message: `Database row deleted! [Query: ${sql}]` });
     });
 });
@@ -89,7 +89,7 @@ router.delete("/delete", (req, res) => {
 
 //erro 404
 router.get('*', (req, res) => {       
-    res.json({ data: 'Erro, URL inválido.' });
+    res.json({ message: 'Erro, URL inválido.' });
 });
 
 
