@@ -67,6 +67,7 @@ router.post("/create", (req, res) => {
 router.put("/edit", (req, res) => {
     var sql = `UPDATE ${req.body["Tabela"]} SET `;
     switch (req.body["Tabela"]) {
+        case "Categoria": sql += `Nome = '${req.body["Nome"]}'`; break;
         case "Autor": 
         case "Editora": sql += `Nome = '${req.body["Nome"]}', Pais = '${req.body["Pais"]}'`; break;
         default: sql += `Titulo = '${req.body["Titulo"]}', ISBN = '${req.body["ISBN"]}', Numero_Paginas = ${req.body["Numero_Paginas"]}, IDEditora = ${req.body["IDEditora"]}, Capa = '${req.body["Capa"]}'`; break;
