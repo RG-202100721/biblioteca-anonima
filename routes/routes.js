@@ -15,8 +15,9 @@ router.get("/getBooks", (req, res) => {
 	});
 });
 router.post("/create", (req, res) => {
+    console.log(req.body);
     var sql = `SELECT ID FROM ${req.body["Tabela"]} ORDER BY ID ASC;`;
-    dbcon.query(sql, (err, result) => {
+    DB.query(sql, (err, result) => {
         if (err) throw err;
         else {
             var id = 0;
@@ -25,7 +26,7 @@ router.post("/create", (req, res) => {
             if (req.body["Tabela"] == "Livro") {
                 sql += `(${id}, '${req.body["Titulo"]}', '${req.body["ISBN"]}', ${req.body["Numero_Paginas"]}, ${req.body["IDEditora"]}, '${req.body["Capa"]}');`;
                 var message = `Database row inserted! [Query: ${sql}]\n`;
-                dbcon.query(sql, function(err, result) {
+                DB.query(sql, function(err, result) {
                     if (err) throw err;
                     else {
                         sql = "";
@@ -33,7 +34,7 @@ router.post("/create", (req, res) => {
                             sql += `INSERT INTO Livro_Autor VALUES (${id}, ${IDAutor});`;
                         });
                         message += `Database row inserted! [Query: ${sql}]\n`;
-                        dbcon.query(sql, function(err, result) {
+                        DB.query(sql, function(err, result) {
                             if (err) throw err;
                             else {
                                 sql = "";
@@ -41,7 +42,7 @@ router.post("/create", (req, res) => {
                                     sql += `INSERT INTO Livro_Autor VALUES (${id}, ${IDCategoria});`;
                                 });
                                 message += `Database row inserted! [Query: ${sql}]`;
-                                dbcon.query(sql, (err, result) => {
+                                DB.query(sql, (err, result) => {
                                     if (err) { res.json({ message: '0 results.' }); throw err; }
                                     else res.json({ message: message });
                                 });
@@ -56,7 +57,7 @@ router.post("/create", (req, res) => {
                     case "Editora": sql += `(${id}, '${req.body["Nome"]}', '${req.body["Pais"]}');`; break;
                     default: sql += `(${id}, '${req.body["Nome"]}');`; break;
                 }
-                dbcon.query(sql, (err, result) => {
+                DB.query(sql, (err, result) => {
                     if (err) { res.json({ message: '0 results.' }); throw err; }
                     else res.json({ message: `Database row inserted! [Query: ${sql}]` });
                 });
@@ -74,14 +75,14 @@ router.put("/edit", (req, res) => {
     }
     sql += ` WHERE ID = ${req.body["ID"]};`
 
-    dbcon.query(sql, (err, result) => {
+    DB.query(sql, (err, result) => {
    		if (err) { res.json({ message: '0 results.' }); throw err; }
         else res.json({ message: `Database row updated! [Query: ${sql}]` });
 	});
 });
 router.delete("/delete", (req, res) => {
     var sql = `DELETE FROM ${req.body["Tabela"]} WHERE ID = ${req.body["ID"]};`;
-    dbcon.query(sql, (err, result) => {
+    DB.query(sql, (err, result) => {
         if (err) { res.json({ message: '0 results.' }); throw err; }
         else res.json({ message: `Database row deleted! [Query: ${sql}]` });
     });
