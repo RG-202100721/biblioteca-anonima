@@ -39,7 +39,7 @@ router.post("/create", (req, res) => {
                             else {
                                 sql = "";
                                 req.body["IDCategorias"].forEach(IDCategoria => {
-                                    sql += `INSERT INTO Livro_Autor VALUES (${id}, ${IDCategoria});`;
+                                    sql += `INSERT INTO Livro_Categoria VALUES (${id}, ${IDCategoria});`;
                                 });
                                 message += `Database row inserted! [Query: ${sql}]`;
                                 DB.query(sql, (err, result) => {
