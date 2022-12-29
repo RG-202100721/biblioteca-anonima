@@ -3,7 +3,11 @@
 function getDataDB(URL, onSuccess, onError) {
     fetch(URL, { method: "GET" })
     .then(res => {
-        if (res.status == 200) res.json().then(result => { onSuccess(JSON.stringify(result)) });
+        if (res.status == 200) 
+            res.json().then(result => {
+                copyToSessionStorage(URL, result);
+                onSuccess(JSON.stringify(result));
+            });
         else res.json().then(message => { onError(JSON.stringify(message)) });
     });
 }
