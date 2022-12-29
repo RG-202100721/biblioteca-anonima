@@ -8,8 +8,8 @@
 getDataDB("/getBooks", (result) => {
     document.body.innerText += result;
     document.body.innerHTML += "<br><br>";
-}, 
-(message) => onError(message));
+});
+
 /*
 var book = { 
     "Titulo": "some book 2 - the sequel",
@@ -22,8 +22,8 @@ var book = {
 };
 
 createDB(DatabaseTables.LIVRO, book, (message) => onSuccess(message), (message) => onError(message));  
-//editDB(DatabaseTables.LIVRO, 9, book, (message) => onSuccess(message), (message) => onError(message));
-//deleteDB(DatabaseTables.LIVRO, 10, (message) => onSuccess(message), (message) => onError(message)); 
+//editDB(DatabaseTables.LIVRO, 9, book);
+//deleteDB(DatabaseTables.LIVRO, 10, (message) => onSuccess(message));
 */
 function onSuccess(message) {
     //fazer algo com a mensagem de sucesso
