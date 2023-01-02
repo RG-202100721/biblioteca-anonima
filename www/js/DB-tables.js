@@ -1,6 +1,6 @@
 //enumeração das tabelas da base de dados e verificação do JSON a ser enviado para a API.
 
-class DatabaseTables {
+export class DatabaseTables {
 	static AUTOR = new DatabaseTables("Autor");
 	static EDITORA = new DatabaseTables("Editora");
 	static LIVRO = new DatabaseTables("Livro");
@@ -52,10 +52,10 @@ class DatabaseTables {
         else console.log(e + "\n" + text);
 		alert("JSON está errado.\nPara detalhes:\n[F12 -> Console]");
     }
-}
 
-function getLengthOfObject(object) {
-	var i = 0;
-	for (var key in object) i++;
-	return i;
+    getLengthOfObject(object) {
+        var i = 0;
+        for (var key in object) i++;
+        return i;
+    }
 }
