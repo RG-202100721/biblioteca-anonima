@@ -3,8 +3,8 @@ const router_DB = express.Router();
 const DB = require("./DB");
 
 //rotas de interação com a base de dados
-router_DB.get("/getBooks", (req, res) => {
-    var sql = DB.listaLivro;
+router_DB.get("/getAll", (req, res) => {
+    var sql = DB.listaTudo;
     DB.query(sql, (err, result) => {
    		if (err) { res.status(500).json({ data: '0 results.' }); throw err; }
    		if (result) res.status(200).json({ data: result });

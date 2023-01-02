@@ -1,16 +1,17 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
-import { BrowserStorage } from "./DB-storage";
+import { BrowserStorage } from "./DB-storage.js";
 var BS = new BrowserStorage();
 
 export class DatabaseRequest {
-    getDataDB(URL, onSuccess, onError) {
-        fetch(URL, { method: "GET" })
+
+    getAllDB(onSuccess, onError) {
+        fetch("/getAll", { method: "GET" })
         .then(res => {
             if (res.status == 200) 
                 res.json().then(result => {
-                    BS.copyToSessionStorage(URL, result);
-                    onSuccess(JSON.stringify(result));
+                    BS.copyToSessionStorage("/getAll", result);
+                    onSuccess();
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });
@@ -27,7 +28,10 @@ export class DatabaseRequest {
                 body: data
             })
             .then(res => {
-                if (res.status == 200) res.json().then(message => { onSuccess(JSON.stringify(message)) });
+                if (res.status == 200) 
+                    res.json().then(message => {
+                        onSuccess(JSON.stringify(message));
+                    });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
             });
         }
@@ -45,7 +49,10 @@ export class DatabaseRequest {
                 body: data
             })
             .then(res => {
-                if (res.status == 200) res.json().then(message => { onSuccess(JSON.stringify(message)) });
+                if (res.status == 200) 
+                    res.json().then(message => {
+                        onSuccess(JSON.stringify(message));
+                    });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
             });
         }
@@ -63,8 +70,13 @@ export class DatabaseRequest {
             body: data
         })
         .then(res => {
-            if (res.status == 200) res.json().then(message => { onSuccess(JSON.stringify(message)); });
+            if (res.status == 200) 
+                res.json().then(message => {
+                    onSuccess(JSON.stringify(message));
+                });
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });
     }
 }
+
+if (sessionStorage.getItem("Livros") == undefined) new DatabaseRequest().getAllDB(() => {}, (message) => { console.log(message); });

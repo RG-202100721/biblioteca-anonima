@@ -3,15 +3,15 @@
 //exemplos de uso dos métodos do script DB-request.js (Pedidos CRUD à API).
 //se quiserem fazer mais do que uma operação ao mesmo tempo, têm de fazer a 2ª no callback da 1º (para a 1ª acabar primeiro)
 
-import { DatabaseTables } from "./DB-tables";
-import { DatabaseRequest } from "./DB-request";
+import { DatabaseTables } from "./DB-tables.js";
+import { DatabaseRequest } from "./DB-request.js";
 
 var DB = new DatabaseRequest();
 
-DB.getDataDB("/getBooks", (result) => {
-    document.body.innerText += result;
+DB.getAllDB(() => {
+    document.body.innerText += sessionStorage.getItem("Livros");
     document.body.innerHTML += "<br><br>";
-});
+}, (message) => onError(message));
 
 var book = { 
     "Titulo": "some book 2 - the sequel",
@@ -24,16 +24,16 @@ var book = {
 };
 
 DB.createDB(DatabaseTables.LIVRO, book, (message) => onSuccess(message), (message) => onError(message));  
-DB.editDB(DatabaseTables.LIVRO, 9, book);
-DB.deleteDB(DatabaseTables.LIVRO, 10, (message) => onSuccess(message));
+DB.editDB(DatabaseTables.LIVRO, 9, book, (message) => onSuccess(message), (message) => onError(message));  
+DB.deleteDB(DatabaseTables.LIVRO, 10, (message) => onSuccess(message), (message) => onError(message));
 
 function onSuccess(message) {
-    //fazer algo com a mensagem de sucesso
+    //fazer algo
     //ou não... é com vocês
 }
 
 function onError(message) {
-    //fazer algo com a mensagem de erro
+    //fazer algo
     //ou não... é com vocês
 }
 
