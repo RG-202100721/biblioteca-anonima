@@ -10,7 +10,7 @@ export class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(result => {
-                    BS.copyToSessionStorage("/getAll", result);
+                    BS.copyToSessionStorage(result);
                     onSuccess();
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -30,6 +30,7 @@ export class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
+                        BS.updateSessionStorage("/create", JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -51,6 +52,7 @@ export class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
+                        BS.updateSessionStorage("/edit", JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -72,6 +74,7 @@ export class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(message => {
+                    BS.updateSessionStorage("/delete", JSON.parse(data));
                     onSuccess(JSON.stringify(message));
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -79,4 +82,6 @@ export class DatabaseRequest {
     }
 }
 
-if (sessionStorage.getItem("Livros") == undefined) new DatabaseRequest().getAllDB(() => {}, (message) => { console.log(message); });
+document.onreadystatechange = () => {
+    if (document.readyState === 'complete') BS.checkStorage();
+};

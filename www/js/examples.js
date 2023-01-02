@@ -1,17 +1,12 @@
 //para apagar antes da apresentação final
 //-------------------------------------------------------------------------------------------------------
 //exemplos de uso dos métodos do script DB-request.js (Pedidos CRUD à API).
-//se quiserem fazer mais do que uma operação ao mesmo tempo, têm de fazer a 2ª no callback da 1º (para a 1ª acabar primeiro)
+//se quiserem fazer uma operação só depois da outra ter terminado, têm de fazer-la no callback da 1º
 
 import { DatabaseTables } from "./DB-tables.js";
 import { DatabaseRequest } from "./DB-request.js";
 
 var DB = new DatabaseRequest();
-
-DB.getAllDB(() => {
-    document.body.innerText += sessionStorage.getItem("Livros");
-    document.body.innerHTML += "<br><br>";
-}, (message) => onError(message));
 
 var book = { 
     "Titulo": "some book 2 - the sequel",
@@ -40,5 +35,24 @@ function onError(message) {
 //-------------------------------------------------------------------------------------------------------
 
 //exemplos de uso dos métodos do script DB-storage.js (Pedidos à Storage do Browser). 
+//utilizem estas funções para mostrar os dados ao utilizador/admin
 
+import { BrowserStorage } from "./DB-storage.js";
+
+var BS = new BrowserStorage();
+
+BS.getBooks();
+BS.getBook(1);
+
+BS.getAuthors();
+BS.getAuthor(2);
+
+BS.getCategories();
+BS.getCategory(3);
+
+BS.getPublishers();
+BS.getPublisher(4);
+
+
+//-------------------------------------------------------------------------------------------------------
 
