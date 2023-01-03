@@ -1,55 +1,56 @@
 //processamento dos dados recebidos da nossa API utilizando o objeto localStorage e sessionStorage
 
 import { DatabaseRequest } from "./DB-request.js";
+import { DatabaseTables } from "./DB-tables.js";
 
 export class BrowserStorage {
 
 	checkStorage() {
-		if (sessionStorage.getItem("Livros") == undefined) {
+		if (sessionStorage.getItem("Livro") == undefined) {
 			new DatabaseRequest().getAllDB(() => { location.reload(); }, (message) => { console.log(message); });
 		}
 	}
 
 	getBooks() {
-		return JSON.parse(sessionStorage.getItem("Livros"));
+		return JSON.parse(sessionStorage.getItem("Livro"));
 	}
 	getBook(index) {
-		let books = JSON.parse(sessionStorage.getItem("Livros"));
+		let books = JSON.parse(sessionStorage.getItem("Livro"));
 		if (index == 0 || index > books.length) console.error("index is wrong (tip: start from 1)");
 		return books[index - 1];
 	}
 
 	getAuthors() {
-		return JSON.parse(sessionStorage.getItem("Autores"));
+		return JSON.parse(sessionStorage.getItem("Autor"));
 	}
 	getAuthor(index) {
-		let authors = JSON.parse(sessionStorage.getItem("Autores"));
+		let authors = JSON.parse(sessionStorage.getItem("Autor"));
 		if (index == 0 || index > authors.length) console.error("index is wrong (tip: start from 1)");
 		return authors[index - 1];
 	}
 
 	getCategories() {
-		return JSON.parse(sessionStorage.getItem("Categorias"));
+		return JSON.parse(sessionStorage.getItem("Categoria"));
 	}
 	getCategory(index) {
-		let categories = JSON.parse(sessionStorage.getItem("Categorias"));
+		let categories = JSON.parse(sessionStorage.getItem("Categoria"));
 		if (index == 0 || index > categories.length) console.error("index is wrong (tip: start from 1)");
 		return categories[index - 1];
 	}
 
 	getPublishers() {
-		return JSON.parse(sessionStorage.getItem("Editoras"));
+		return JSON.parse(sessionStorage.getItem("Editora"));
 	}
 	getPublisher(index) {
-		let publishers = JSON.parse(sessionStorage.getItem("Editoras"));
+		let publishers = JSON.parse(sessionStorage.getItem("Editora"));
 		if (index == 0 || index > publishers.length) console.error("index is wrong (tip: start from 1)");
 		return publishers[index - 1];
 	}
 
 	copyToSessionStorage(result) {
-		sessionStorage.setItem("Autores", JSON.stringify(result["data"][0]));
-		sessionStorage.setItem("Categorias", JSON.stringify(result["data"][1]));
-		sessionStorage.setItem("Editoras", JSON.stringify(result["data"][2]));
+		sessionStorage.setItem("Autor", JSON.stringify(result["data"][0]));
+		sessionStorage.setItem("Categoria", JSON.stringify(result["data"][1]));
+		sessionStorage.setItem("Editora", JSON.stringify(result["data"][2]));
 
 		for (var i = 0; i < result["data"][3].length; i++) {
 			result["data"][3][i]["IDEditora"] = {
@@ -77,13 +78,73 @@ export class BrowserStorage {
 			});
 			result["data"][3][i]["IDCategorias"] = categories;
 		}
-		sessionStorage.setItem("Livros", JSON.stringify(result["data"][3]));
+		sessionStorage.setItem("Livro", JSON.stringify(result["data"][3]));
 	}
 
-	updateSessionStorage(URL, data) {
+	modifySessionStorage(URL, data) {
+		let array = new Array();
+		let table = data["Tabela"];
 		switch (URL) {
 			case "/create":
-				
+				switch (table) {
+					case DatabaseTables.CATEGORIA:
+						array = this.getCategories();
+						array.push({
+							"ID": array.length + 1,
+							"Nome": data["Nome"]
+						});
+                    	break;
+
+                	case DatabaseTables.AUTOR:
+                	case DatabaseTables.EDITORA:
+						if (table == DatabaseTables.AUTOR) array = this.getAuthors();
+						else array = this.getPublishers();
+						array.push({
+							"ID": array.length + 1,
+							"Nome": data["Nome"],
+							"Pais": data["Pais"],
+						});
+	                	break;
+
+                	case DatabaseTables.LIVRO:
+						let authors = new Array();
+						this.getAuthors().forEach(author => {
+							data["IDAutores"].forEach(id => {
+								if (id == author["ID"])
+									authors.push({
+										"ID": id,
+										"Nome": author["Nome"]
+									});
+							});
+						});
+
+						let categories = new Array();
+						this.getCategories().forEach(category => {
+							data["IDCategorias"].forEach(id => {
+								if (id == category["ID"])
+									categories.push({
+										"ID": id,
+										"Nome": category["Nome"]
+									});
+							});
+						});
+
+						array = this.getBooks();
+						array.push({
+							"ID": array.length + 1,
+							"Titulo": data["Titulo"],
+							"ISBN": data["ISBN"],
+							"Numero_Paginas": data["Numero_Paginas"],
+							"IDEditora": {
+								"ID": data["IDEditora"], 
+								"Nome": this.getPublishers()[data["IDEditora"] - 1]["Nome"]
+							},
+							"Capa": data["Capa"],
+							"IDAutores": authors,
+							"IDCategorias": categories
+						});
+                    	break;
+				}
 				break;
 
 			case "/edit":
@@ -93,8 +154,8 @@ export class BrowserStorage {
 			case "/delete":
 				
 				break;
-			default: break;
 		}
+		sessionStorage.setItem(table.name, JSON.stringify(array));
 	}
 
 	reset() {

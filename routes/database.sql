@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS Editora (
   ID int NOT NULL AUTO_INCREMENT, 
   Nome varchar(255) NOT NULL UNIQUE, 
   Pais varchar(255) NOT NULL,
+  Logo varchar(255) NOT NULL UNIQUE,
   PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -77,11 +78,11 @@ INSERT INTO Autor (Nome, Pais) VALUES
 ('Todd Miranda', 'USA'),
 ('Christian Wenz', 'USA');
 
-INSERT INTO Editora (Nome, Pais) VALUES
-('Little, Brown and Company', 'USA'),
-('Scribner', 'USA'),
-('Thomas Egerton', 'UK'),
-('Wiley', 'USA');
+INSERT INTO Editora (Nome, Pais, Logo) VALUES
+('Little, Brown and Company', 'USA', 'https://miro.medium.com/max/2400/0*AR6ZP36DQ4axeRxs.jpeg'),
+('Scribner', 'USA', 'https://about.simonandschuster.biz/wp-content/uploads/2016/08/Scribner-Logo.jpg'),
+('Thomas Egerton', 'UK', 'https://pbs.twimg.com/media/Elqv7kgXUAEoaw2.jpg'),
+('Wiley', 'USA', 'https://4vector.com/i/free-vector-wiley-1_075176_wiley-1.png');
 
 INSERT INTO Livro (Titulo, ISBN, Numero_Paginas, IDEditora, Capa) VALUES
 ('The Catcher in the Rye', "978-0241950425", 240, 1, 'https://m.media-amazon.com/images/I/91HPG31dTwL.jpg'),

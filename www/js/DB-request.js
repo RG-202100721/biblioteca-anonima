@@ -30,7 +30,7 @@ export class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
-                        BS.updateSessionStorage("/create", JSON.parse(data));
+                        BS.modifySessionStorage("/create", JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -52,7 +52,7 @@ export class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
-                        BS.updateSessionStorage("/edit", JSON.parse(data));
+                        BS.modifySessionStorage("/edit", JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
                 else res.json().then(message => { onError(JSON.stringify(message)) });
@@ -74,7 +74,7 @@ export class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(message => {
-                    BS.updateSessionStorage("/delete", JSON.parse(data));
+                    BS.modifySessionStorage("/delete", JSON.parse(data));
                     onSuccess(JSON.stringify(message));
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
