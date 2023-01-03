@@ -81,78 +81,121 @@ export class BrowserStorage {
 		sessionStorage.setItem("Livro", JSON.stringify(result["data"][3]));
 	}
 
-	modifySessionStorage(URL, data) {
+	addSessionStorage(data) {
 		let array = new Array();
 		let table = data["Tabela"];
-		switch (URL) {
-			case "/create":
-				switch (table) {
-					case DatabaseTables.CATEGORIA:
-						array = this.getCategories();
-						array.push({
-							"ID": array.length + 1,
-							"Nome": data["Nome"]
-						});
-                    	break;
-
-                	case DatabaseTables.AUTOR:
-                	case DatabaseTables.EDITORA:
-						if (table == DatabaseTables.AUTOR) array = this.getAuthors();
-						else array = this.getPublishers();
-						array.push({
-							"ID": array.length + 1,
-							"Nome": data["Nome"],
-							"Pais": data["Pais"],
-						});
-	                	break;
-
-                	case DatabaseTables.LIVRO:
-						let authors = new Array();
-						this.getAuthors().forEach(author => {
-							data["IDAutores"].forEach(id => {
-								if (id == author["ID"])
-									authors.push({
-										"ID": id,
-										"Nome": author["Nome"]
-									});
-							});
-						});
-
-						let categories = new Array();
-						this.getCategories().forEach(category => {
-							data["IDCategorias"].forEach(id => {
-								if (id == category["ID"])
-									categories.push({
-										"ID": id,
-										"Nome": category["Nome"]
-									});
-							});
-						});
-
-						array = this.getBooks();
-						array.push({
-							"ID": array.length + 1,
-							"Titulo": data["Titulo"],
-							"ISBN": data["ISBN"],
-							"Numero_Paginas": data["Numero_Paginas"],
-							"IDEditora": {
-								"ID": data["IDEditora"], 
-								"Nome": this.getPublishers()[data["IDEditora"] - 1]["Nome"]
-							},
-							"Capa": data["Capa"],
-							"IDAutores": authors,
-							"IDCategorias": categories
-						});
-                    	break;
-				}
+		let id = 0;
+		switch (table) {
+			case DatabaseTables.CATEGORIA:
+				array = this.getCategories();
+				for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
+				array.push({
+					"ID": id,
+					"Nome": data["Nome"]
+				});
+				array.sort((a, b) => a["ID"] - b["ID"]);
 				break;
 
-			case "/edit":
+			case DatabaseTables.AUTOR:
+			case DatabaseTables.EDITORA:
+				if (table == DatabaseTables.AUTOR) array = this.getAuthors();
+				else array = this.getPublishers();
+				for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
+				array.push({
+					"ID": id,
+					"Nome": data["Nome"],
+					"Pais": data["Pais"]
+				});
+				array.sort((a, b) => a["ID"] - b["ID"]);
+				break;
+
+			case DatabaseTables.LIVRO:
+				let authors = new Array();
+				this.getAuthors().forEach(author => {
+					data["IDAutores"].forEach(rowId => {
+						if (rowId == author["ID"])
+							authors.push({
+								"ID": rowId,
+								"Nome": author["Nome"]
+							});
+					});
+				});
+
+				let categories = new Array();
+				this.getCategories().forEach(category => {
+					data["IDCategorias"].forEach(rowId => {
+						if (rowId == category["ID"])
+							categories.push({
+								"ID": rowId,
+								"Nome": category["Nome"]
+							});
+					});
+				});
+
+				array = this.getBooks();
+				for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
+				array.push({
+					"ID": id,
+					"Titulo": data["Titulo"],
+					"ISBN": data["ISBN"],
+					"Numero_Paginas": data["Numero_Paginas"],
+					"IDEditora": {
+						"ID": data["IDEditora"], 
+						"Nome": this.getPublishers()[data["IDEditora"] - 1]["Nome"]
+					},
+					"Capa": data["Capa"],
+					"IDAutores": authors,
+					"IDCategorias": categories
+				});
+				array.sort((a, b) => a["ID"] - b["ID"]);
+				break;
+		}
+		sessionStorage.setItem(table.name, JSON.stringify(array));
+	}
+
+	updateSessionStorage(data) {
+		let array = new Array();
+		let table = data["Tabela"];
+		let id = data["ID"];
+		switch (table) {
+			case DatabaseTables.CATEGORIA:
+
+				break;
+
+			case DatabaseTables.AUTOR:
+			case DatabaseTables.EDITORA:
+				if (table == DatabaseTables.AUTOR) array = this.getAuthors();
+				else array = this.getPublishers();
 				
 				break;
 
-			case "/delete":
+			case DatabaseTables.LIVRO:
 				
+				break;
+		}
+		sessionStorage.setItem(table.name, JSON.stringify(array));
+	}
+
+	deleteSessionStorage(data) {
+		let array = new Array();
+		let table = data["Tabela"];
+		let id = data["ID"];
+		switch (table) {
+			case DatabaseTables.CATEGORIA:
+				array = this.getCategories();
+				array.splice(array.map(i => i["ID"]).indexOf(id), 1);
+				break;
+
+			case DatabaseTables.AUTOR:
+			case DatabaseTables.EDITORA:
+				if (table == DatabaseTables.AUTOR) array = this.getAuthors();
+				else array = this.getPublishers();
+				array.splice(array.map(i => i["ID"]).indexOf(id), 1);
+				break;
+
+			case DatabaseTables.LIVRO:
+				array = this.getBooks();
+				array.splice(array.map(i => i["ID"]).indexOf(id), 1);
 				break;
 		}
 		sessionStorage.setItem(table.name, JSON.stringify(array));
