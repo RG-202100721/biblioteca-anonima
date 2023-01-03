@@ -10,8 +10,7 @@ export class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(result => {
-                    BS.copyToSessionStorage(result);
-                    onSuccess();
+                    BS.copyToSessionStorage(result, () => onSuccess());
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });

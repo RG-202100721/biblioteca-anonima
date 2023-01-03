@@ -25,7 +25,7 @@ export class DatabaseTables {
                     text += "Campos JSON para a tabela \"Autor\" e \"Editora\" são:\nNome [String]\nPais [String]";
                     if (getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") pass = true;
                     break;
-                    
+
                 case DatabaseTables.LIVRO:
                     text += "Campos JSON para a tabela \"Livro\" são:\nTitulo [String]\nISBN [String]\nNumero_Paginas [int]\nIDEditora [int]\nCapa [String]\nIDAutores [Array JSON de ints]\nIDCategorias [Array JSON de ints]";
                     if (getLengthOfObject(data) == 7 && data["Titulo"] != "" && data["ISBN"] != "" && data["Numero_Paginas"] > 0 && data["IDEditora"] > 0 && data["Capa"] != "") {
@@ -50,8 +50,8 @@ export class DatabaseTables {
     }
 
     errorJSON(text, e) {
-        if (e == null) console.log(text);
-        else console.log(e + "\n" + text);
+        if (e == null) console.error(text);
+        else console.error(e + "\n" + text);
 		alert("JSON está errado.\nPara detalhes:\n[F12 -> Console]");
     }
 
