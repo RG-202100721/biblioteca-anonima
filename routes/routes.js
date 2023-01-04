@@ -1,5 +1,4 @@
-//const router = express.Router();
-const router = require("./routes-DB");
+const router = require("./DB/routes");
 const path = require("path");
 
 

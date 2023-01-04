@@ -1,6 +1,6 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
-import { BrowserStorage } from "./DB-storage.js";
+import { BrowserStorage } from "./storage.js";
 var BS = new BrowserStorage();
 
 export class DatabaseRequest {

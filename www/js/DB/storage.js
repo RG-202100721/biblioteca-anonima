@@ -1,7 +1,7 @@
 //processamento dos dados recebidos da nossa API utilizando o objeto localStorage e sessionStorage
 
-import { DatabaseRequest } from "./DB-request.js";
-import { DatabaseTables } from "./DB-tables.js";
+import { DatabaseRequest } from "./request.js";
+import { DatabaseTables } from "./tables.js";
 
 export class BrowserStorage {
 

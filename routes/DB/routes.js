@@ -1,9 +1,9 @@
 const express = require("express");
-const router_DB = express.Router();
-const DB = require("./DB");
+const router_DB = require("./authentication");
+const DB = require("./connection");
 
 //rotas de interação com a base de dados
-router_DB.get("/getAll", (req, res) => {
+router_DB.get("/getAll",  (req, res) => {
     var sql = DB.listaTudo;
     DB.query(sql, (err, result) => {
    		if (err) { res.status(500).json({ data: '0 results.' }); throw err; }
@@ -133,23 +133,6 @@ router_DB.delete("/delete", (req, res) => {
         if (err) { res.status(500).json({ message: '0 results.' }); throw err; }
         else res.status(200).json({ message: `Database row deleted! [Query: ${sql}]` });
     });
-});
-
-router_DB.get("/login", (req, res) => {
-    var sql = "SELECT * FROM Administrador ORDER BY ID ASC;";
-    DB.query(sql, (err, result) => {
-        if (err) { res.status(500).json({ data: '0 results.' }); throw err; }
-        
-        result["Numero_Conta"]
-        result["Password"]
-
-        var pass = false;
-        req.body["Numero_Conta"]
-        req.body["Password"]
-
-   		if (pass == true) res.status(200).json({ data: result });
-        else res.status(500).json({ data: '0 results.' });
-	});
 });
 
 module.exports = router_DB;
