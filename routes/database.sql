@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Livro (
 DROP TABLE IF EXISTS Categoria;
 CREATE TABLE IF NOT EXISTS Categoria (
   ID int PRIMARY KEY AUTO_INCREMENT,
-  Nome varchar(25) NOT NULL UNIQUE
+  Nome varchar(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Livro_Autor;
@@ -66,6 +66,14 @@ CREATE TABLE Livro_Categoria (
     IDCategoria INT NOT NULL,
     FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (IDCategoria) REFERENCES Categoria(ID) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS Administrador;
+CREATE TABLE IF NOT EXISTS Administrador (
+  ID int PRIMARY KEY AUTO_INCREMENT,
+  Nome varchar(255) NOT NULL UNIQUE,
+  Numero_Conta varchar(255) NOT NULL UNIQUE,
+  Password varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 INSERT INTO Autor (Nome, Pais) VALUES
@@ -147,3 +155,8 @@ INSERT INTO Livro_Categoria (IDLivro, IDCategoria) VALUES
 (6, 1),
 (6, 4),
 (7, 23);
+
+INSERT INTO Administrador (Nome, Numero_Conta, Password) VALUES
+('Diogo Mata', '202101127', md5('carolas2')),
+('Kerlington Machado', '202101188', md5('paodebatata')),
+('Rafael Gouveia', '202100721', md5('password'));

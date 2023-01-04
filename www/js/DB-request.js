@@ -79,8 +79,14 @@ export class DatabaseRequest {
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });
     }
+
+    checkStorage() {
+		if (sessionStorage.getItem("Livro") == undefined) {
+			this.getAllDB(() => { location.reload(); }, (message) => { console.error(message); });
+		}
+	}
 }
 
 document.onreadystatechange = () => {
-    if (document.readyState === 'complete') BS.checkStorage();
+    if (document.readyState === 'complete') new DatabaseRequest().checkStorage();
 };

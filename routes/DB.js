@@ -93,3 +93,9 @@ RIGHT JOIN Autor AS A
 ON LA.IDAutor = A.ID 
 GROUP BY L.ID;`.replace(/\s+/g, ' ').split("\r\n").join('');
 
+exports.listaTudo = `SELECT * FROM Autor ORDER BY ID ASC; 
+SELECT * FROM Categoria ORDER BY ID ASC;
+SELECT * FROM Editora ORDER BY ID ASC;
+SELECT * FROM Livro ORDER BY ID ASC; 
+SELECT * FROM Livro_Autor ORDER BY IDLivro ASC, IDAutor ASC;
+SELECT * FROM Livro_Categoria ORDER BY IDLivro ASC, IDCategoria ASC;`.replace(/\s+/g, ' ').split("\r\n").join('');

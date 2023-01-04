@@ -5,12 +5,6 @@ import { DatabaseTables } from "./DB-tables.js";
 
 export class BrowserStorage {
 
-	checkStorage() {
-		if (sessionStorage.getItem("Livro") == undefined) {
-			new DatabaseRequest().getAllDB(() => { location.reload(); }, (message) => { console.error(message); });
-		}
-	}
-
 	getBooks() {
 		return JSON.parse(sessionStorage.getItem("Livro"));
 	}
@@ -262,6 +256,17 @@ export class BrowserStorage {
 		catch (error) {
 			console.error(error + "\nItem in DB is probably already deleted.");
 		}
+	}
+
+	getAdmin() {
+		let data = JSON.parse(localStorage.getItem("Admin"));
+		if (data != undefined) return data;
+		else return "no";
+	}
+
+	copyToLocalStorage(result, onSucess) {
+		localStorage.setItem("Admin", JSON.stringify(result["data"]));
+		onSucess();
 	}
 
 	reset() {
