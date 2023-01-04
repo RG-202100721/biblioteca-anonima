@@ -20,4 +20,11 @@ router_auth.get("/login", (req, res) => {
 	});
 });
 
+//verifica se o administrador está autenticado
+export function checkAuth(req, res, next) {
+    const token = req.cookies.token;
+    if (!token) res.status(401).json({ message: 'Não está autenticado.' });
+    else next();
+}
+
 module.exports = router_auth;
