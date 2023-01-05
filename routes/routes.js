@@ -1,4 +1,5 @@
-const router = require("./DB/routes");
+const router = require("./DB/routes").router_DB;
+const checkAuth = require("./DB/routes").checkAuth;
 const path = require("path");
 
 

@@ -1,9 +1,10 @@
 const express = require("express");
-const router_DB = require("./authentication");
+const router_DB = require("./authentication").router_auth;
+const checkAuth = require("./authentication").checkAuth;
 const DB = require("./connection");
 
 //rotas de interação com a base de dados
-router_DB.get("/getAll",  (req, res) => {
+router_DB.get("/getAll", (req, res) => {
     var sql = DB.listaTudo;
     DB.query(sql, (err, result) => {
    		if (err) { res.status(500).json({ data: '0 results.' }); throw err; }
@@ -11,7 +12,7 @@ router_DB.get("/getAll",  (req, res) => {
         else res.status(500).json({ data: '0 results.' });
 	});
 });
-router_DB.post("/create", (req, res) => {
+router_DB.post("/create", checkAuth, (req, res) => {
     var sql = `SELECT ID FROM ${req.body["Tabela"]} ORDER BY ID ASC;`;
     DB.query(sql, (err, result) => {
         if (err) { res.status(500).json({ message: '0 results.' }); throw err; }
@@ -64,7 +65,7 @@ router_DB.post("/create", (req, res) => {
         }
     });
 });
-router_DB.put("/edit", (req, res) => {
+router_DB.put("/edit", checkAuth, (req, res) => {
     var sql = `UPDATE ${req.body["Tabela"]} SET `;
     if (req.body["Tabela"] == "Livro") {
         sql += `Titulo = '${req.body["Titulo"]}', ISBN = '${req.body["ISBN"]}', Numero_Paginas = ${req.body["Numero_Paginas"]}, IDEditora = ${req.body["IDEditora"]}, Capa = '${req.body["Capa"]}' WHERE ID = ${req.body["ID"]};`;
@@ -127,7 +128,7 @@ router_DB.put("/edit", (req, res) => {
         });
     }
 });
-router_DB.delete("/delete", (req, res) => {
+router_DB.delete("/delete", checkAuth, (req, res) => {
     var sql = `DELETE FROM ${req.body["Tabela"]} WHERE ID = ${req.body["ID"]};`;
     DB.query(sql, (err, result) => {
         if (err) { res.status(500).json({ message: '0 results.' }); throw err; }
@@ -135,4 +136,7 @@ router_DB.delete("/delete", (req, res) => {
     });
 });
 
-module.exports = router_DB;
+module.exports = {
+    router_DB: router_DB,
+    checkAuth: checkAuth
+};

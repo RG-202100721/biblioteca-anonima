@@ -17,18 +17,18 @@ export class DatabaseTables {
             switch (table) {
                 case DatabaseTables.CATEGORIA:
                     text += "Campo JSON para a tabela \"Categoria\" é:\nNome [String]";
-                    if (getLengthOfObject(data) == 1 && data["Nome"] != "") pass = true;
+                    if (this.getLengthOfObject(data) == 1 && data["Nome"] != "") pass = true;
                     break;
 
                 case DatabaseTables.AUTOR:
                 case DatabaseTables.EDITORA:
                     text += "Campos JSON para a tabela \"Autor\" e \"Editora\" são:\nNome [String]\nPais [String]";
-                    if (getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") pass = true;
+                    if (this.getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") pass = true;
                     break;
 
                 case DatabaseTables.LIVRO:
                     text += "Campos JSON para a tabela \"Livro\" são:\nTitulo [String]\nISBN [String]\nNumero_Paginas [int]\nIDEditora [int]\nCapa [String]\nIDAutores [Array JSON de ints]\nIDCategorias [Array JSON de ints]";
-                    if (getLengthOfObject(data) == 7 && data["Titulo"] != "" && data["ISBN"] != "" && data["Numero_Paginas"] > 0 && data["IDEditora"] > 0 && data["Capa"] != "") {
+                    if (this.getLengthOfObject(data) == 7 && data["Titulo"] != "" && data["ISBN"] != "" && data["Numero_Paginas"] > 0 && data["IDEditora"] > 0 && data["Capa"] != "") {
                         var autores = data["IDAutores"];
                         var categorias = data["IDCategorias"];
                         if (autores.length > 0 && categorias.length > 0) {
@@ -41,10 +41,10 @@ export class DatabaseTables {
                     }
                     break;
             }
-            if (pass === false) table.errorJSON(text, null);
+            if (pass === false) this.errorJSON(text, null);
         }
         catch (e) {
-            table.errorJSON(text, e);
+            this.errorJSON(text, e);
         }
         return pass;
     }

@@ -1,7 +1,9 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
 import { BrowserStorage } from "./storage.js";
+import { AuthRequest } from "./authentication.js";
 var BS = new BrowserStorage();
+var AR = new AuthRequest();
 
 export class DatabaseRequest {
 
@@ -32,7 +34,8 @@ export class DatabaseRequest {
                         BS.addSessionStorage(JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
-                else res.json().then(message => { onError(JSON.stringify(message)) });
+                else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+                else res.json().then(message => { onError(JSON.stringify(message)); });
             });
         }
     }
@@ -54,7 +57,8 @@ export class DatabaseRequest {
                         BS.updateSessionStorage(JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
-                else res.json().then(message => { onError(JSON.stringify(message)) });
+                else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+                else res.json().then(message => { onError(JSON.stringify(message)); });
             });
         }
     }
@@ -76,7 +80,8 @@ export class DatabaseRequest {
                     BS.deleteSessionStorage(JSON.parse(data));
                     onSuccess(JSON.stringify(message));
                 });
-            else res.json().then(message => { onError(JSON.stringify(message)) });
+            else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+            else res.json().then(message => { onError(JSON.stringify(message)); });
         });
     }
 
