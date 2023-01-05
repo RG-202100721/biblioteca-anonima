@@ -1,6 +1,6 @@
 //para apagar antes da apresentação final
 //-------------------------------------------------------------------------------------------------------
-//exemplos de uso dos métodos do script DB-request.js (Pedidos CRUD à API).
+//exemplos de uso dos métodos do script DB/request.js (Pedidos CRUD à API).
 //se quiserem fazer uma operação só depois da outra ter terminado, têm de fazer-la no callback da 1º
 
 var DB = new DatabaseRequest();
@@ -31,8 +31,9 @@ function onError(message) {
 
 //-------------------------------------------------------------------------------------------------------
 
-//exemplos de uso dos métodos do script DB-storage.js (Pedidos à Storage do Browser). 
+//exemplos de uso dos métodos do script DB/storage.js (Pedidos à Storage do Browser). 
 //utilizem estas funções para mostrar os dados ao utilizador/admin
+//estas funções retornam uma string JSON com o conteúdo
 
 var BS = new BrowserStorage();
 
@@ -48,6 +49,19 @@ BS.getCategory(3);
 BS.getPublishers();
 BS.getPublisher(4);
 
+BS.getAdmin(); //retorna o nome do admin em string normal
 
 //-------------------------------------------------------------------------------------------------------
 
+//exemplos de uso dos métodos do script DB/authentication.js (Pedidos de autenticação à API). 
+//utilizem estas funções para mostrar entrar/sair na zona de admin
+
+var AR = new AuthRequest();
+
+var info = {
+    "Numero_Conta": 123456789,
+    "Password": "password123"
+};
+
+AR.login(info, (message) => onSuccess(message), (message) => onError(message));
+AR.logout((message) => onError(message));

@@ -5,6 +5,7 @@ class DatabaseTables {
 	static EDITORA = new DatabaseTables("Editora");
 	static LIVRO = new DatabaseTables("Livro");
 	static CATEGORIA = new DatabaseTables("Categoria");
+    static ADMIN = new DatabaseTables("Administrador");
   
 	constructor(name) {
 		this.name = name;
@@ -39,6 +40,10 @@ class DatabaseTables {
                             pass = true;
                         }
                     }
+                    break;
+                case DatabaseTables.ADMIN:
+                    text += "Campos JSON para fazer o login são:\nNumero_Conta [int]\nPassword [String]";
+                    if (this.getLengthOfObject(data) == 2 && data["Numero_Conta"] > 0 && data["Password"] != "") pass = true;
                     break;
             }
             if (pass === false) this.errorJSON(text, null);

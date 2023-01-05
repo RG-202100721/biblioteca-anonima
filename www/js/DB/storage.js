@@ -256,14 +256,9 @@ class BrowserStorage {
 	}
 
 	getAdmin() {
-		let data = JSON.parse(localStorage.getItem("Admin"));
-		if (data != undefined) return data;
-		else return "no";
-	}
-
-	copyToLocalStorage(result, onSucess) {
-		localStorage.setItem("Admin", JSON.stringify(result["data"]));
-		onSucess();
+		//get cookies and find 'token'
+		//get name of admin
+		return document.cookie;
 	}
 
 	reset() {
@@ -272,4 +267,3 @@ class BrowserStorage {
 		window.location.href = "/";
 	}
 }
-//use localStorage to store admin data (delete when admin logs out)

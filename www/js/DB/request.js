@@ -1,5 +1,8 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
+var BS = new BrowserStorage();
+var AR = new AuthRequest();
+
 class DatabaseRequest {
 
     getAllDB(onSuccess, onError) {

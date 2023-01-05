@@ -54,16 +54,16 @@ CREATE TABLE IF NOT EXISTS Categoria (
 
 DROP TABLE IF EXISTS Livro_Autor;
 CREATE TABLE Livro_Autor (
-    IDLivro  INT NOT NULL,
-    IDAutor INT NOT NULL,
+    IDLivro int NOT NULL,
+    IDAutor int NOT NULL,
     FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (IDAutor) REFERENCES Autor(ID) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 DROP TABLE IF EXISTS Livro_Categoria;
 CREATE TABLE Livro_Categoria (
-    IDLivro  INT NOT NULL,
-    IDCategoria INT NOT NULL,
+    IDLivro int NOT NULL,
+    IDCategoria int NOT NULL,
     FOREIGN KEY (IDLivro) REFERENCES Livro(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (IDCategoria) REFERENCES Categoria(ID) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS Administrador;
 CREATE TABLE IF NOT EXISTS Administrador (
   ID int PRIMARY KEY AUTO_INCREMENT,
   Nome varchar(255) NOT NULL UNIQUE,
-  Numero_Conta varchar(255) NOT NULL UNIQUE,
+  Numero_Conta int NOT NULL UNIQUE,
   Password varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -157,6 +157,6 @@ INSERT INTO Livro_Categoria (IDLivro, IDCategoria) VALUES
 (7, 23);
 
 INSERT INTO Administrador (Nome, Numero_Conta, Password) VALUES
-('Diogo Mata', '202101127', md5('carolas2')),
-('Kerlington Machado', '202101188', md5('paodebatata')),
-('Rafael Gouveia', '202100721', md5('password'));
+('Diogo Mata', 202101127, md5('carolas2')),
+('Kerlington Machado', 202101188, md5('paodebatata')),
+('Rafael Gouveia', 202100721, md5('password'));
