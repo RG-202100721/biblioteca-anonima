@@ -1,6 +1,6 @@
 //enumeração das tabelas da base de dados e verificação do JSON a ser enviado para a API.
 
-export class DatabaseTables {
+class DatabaseTables {
 	static AUTOR = new DatabaseTables("Autor");
 	static EDITORA = new DatabaseTables("Editora");
 	static LIVRO = new DatabaseTables("Livro");

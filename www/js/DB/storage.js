@@ -1,9 +1,6 @@
 //processamento dos dados recebidos da nossa API utilizando o objeto localStorage e sessionStorage
 
-import { DatabaseRequest } from "./request.js";
-import { DatabaseTables } from "./tables.js";
-
-export class BrowserStorage {
+class BrowserStorage {
 
 	getBooks() {
 		return JSON.parse(sessionStorage.getItem("Livro"));

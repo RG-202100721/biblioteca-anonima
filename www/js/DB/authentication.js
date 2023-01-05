@@ -1,11 +1,6 @@
 //processamento dos pedidos de autenticação para a nossa API utilizando a API Fetch
 
-import { BrowserStorage } from "./storage.js";
-import { DatabaseTables } from "./tables.js";
-var BS = new BrowserStorage();
-var DT = new DatabaseTables();
-
-export class AuthRequest {
+class AuthRequest {
 
     login(data, onSuccess, onError) {
         if (table.checkJSON(table, data)) {

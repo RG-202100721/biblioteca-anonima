@@ -1,11 +1,6 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
-import { BrowserStorage } from "./storage.js";
-import { AuthRequest } from "./authentication.js";
-var BS = new BrowserStorage();
-var AR = new AuthRequest();
-
-export class DatabaseRequest {
+class DatabaseRequest {
 
     getAllDB(onSuccess, onError) {
         fetch("/getAll", { method: "GET" })

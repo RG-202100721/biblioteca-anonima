@@ -3,9 +3,6 @@
 //exemplos de uso dos métodos do script DB-request.js (Pedidos CRUD à API).
 //se quiserem fazer uma operação só depois da outra ter terminado, têm de fazer-la no callback da 1º
 
-import { DatabaseTables } from "./DB/tables.js";
-import { DatabaseRequest } from "./DB/request.js";
-
 var DB = new DatabaseRequest();
 
 var book = { 
@@ -36,8 +33,6 @@ function onError(message) {
 
 //exemplos de uso dos métodos do script DB-storage.js (Pedidos à Storage do Browser). 
 //utilizem estas funções para mostrar os dados ao utilizador/admin
-
-import { BrowserStorage } from "./DB/storage.js";
 
 var BS = new BrowserStorage();
 
