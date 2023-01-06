@@ -16,7 +16,6 @@ class AuthRequest {
                     sessionStorage.setItem("Admin", data["name"]);
                     onSuccess(JSON.stringify(data["message"])); 
                 });
-                else if (res.status == 400 || res.status == 401) res.json().then(message => { this.noPermission(message["message"]); });
                 else res.json().then(message => { onError(JSON.stringify(message)); });
             });
         }
