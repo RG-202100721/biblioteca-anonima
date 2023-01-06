@@ -6,8 +6,8 @@ class DatabaseRequest {
         fetch("/getAll", { method: "GET" })
         .then(res => {
             if (res.status == 200) 
-                res.json().then(result => {
-                    new BrowserStorage().copyToSessionStorage(result, () => onSuccess());
+                res.json().then(result => { 
+                    new BrowserStorage().copyToSessionStorage(result, () => onSuccess()); 
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });
@@ -24,11 +24,9 @@ class DatabaseRequest {
                 body: data
             })
             .then(res => {
-                if (res.status == 200) 
-                    res.json().then(message => {
-                        new BrowserStorage().addSessionStorage(JSON.parse(data));
-                        onSuccess(JSON.stringify(message));
-                    });
+                if (res.status == 200) res.json().then(message => { 
+                    new BrowserStorage().addSessionStorage(JSON.parse(data), () => onSuccess(JSON.stringify(message))); 
+                });
                 else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
                 else res.json().then(message => { onError(JSON.stringify(message)); });
             });
@@ -47,11 +45,9 @@ class DatabaseRequest {
                 body: data
             })
             .then(res => {
-                if (res.status == 200) 
-                    res.json().then(message => {
-                        new BrowserStorage().updateSessionStorage(JSON.parse(data));
-                        onSuccess(JSON.stringify(message));
-                    });
+                if (res.status == 200) res.json().then(message => { 
+                    new BrowserStorage().updateSessionStorage(JSON.parse(data), () => onSuccess(JSON.stringify(message))); 
+                });
                 else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
                 else res.json().then(message => { onError(JSON.stringify(message)); });
             });
@@ -70,11 +66,9 @@ class DatabaseRequest {
             body: data
         })
         .then(res => {
-            if (res.status == 200) 
-                res.json().then(message => {
-                    new BrowserStorage().deleteSessionStorage(JSON.parse(data));
-                    onSuccess(JSON.stringify(message));
-                });
+            if (res.status == 200) res.json().then(message => { 
+                new BrowserStorage().deleteSessionStorage(JSON.parse(data), () => onSuccess(JSON.stringify(message))); 
+            });
             else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
             else res.json().then(message => { onError(JSON.stringify(message)); });
         });

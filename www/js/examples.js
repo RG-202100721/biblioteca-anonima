@@ -15,7 +15,7 @@ var book = {
     "IDCategorias": [ 21, 15 ]
 };
 
-DB.createDB(DatabaseTables.LIVRO, book, (message) => onSuccess(message), (message) => onError(message));  
+DB.createDB(DatabaseTables.LIVRO, book, null, null);
 DB.editDB(DatabaseTables.LIVRO, 9, book, (message) => onSuccess(message), (message) => onError(message));  
 DB.deleteDB(DatabaseTables.LIVRO, 10, (message) => onSuccess(message), (message) => onError(message));
 

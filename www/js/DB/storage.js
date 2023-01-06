@@ -77,7 +77,7 @@ class BrowserStorage {
 		}
 	}
 
-	addSessionStorage(data) {
+	addSessionStorage(data, onSucess) {
 		let array = new Array();
 		let table = data["Tabela"];
 		let id = 0;
@@ -148,13 +148,14 @@ class BrowserStorage {
 					break;
 			}
 			sessionStorage.setItem(table.name, JSON.stringify(array));
+			onSucess();
 		}
 		catch (error) {
 			console.error(error + "\nWrong index?");
 		}
 	}
 
-	updateSessionStorage(data) {
+	updateSessionStorage(data, onSucess) {
 		let array = new Array();
 		let table = data["Tabela"];
 		let id = data["ID"];
@@ -219,13 +220,14 @@ class BrowserStorage {
 					break;
 			}
 			sessionStorage.setItem(table.name, JSON.stringify(array));
+			onSucess();
 		}
 		catch (error) {
 			console.error(error + "\nItem in DB doesn\'t exist. Wrong index or probably deleted?");
 		}
 	}
 
-	deleteSessionStorage(data) {
+	deleteSessionStorage(data, onSucess) {
 		let array = new Array();
 		let table = data["Tabela"];
 		let id = data["ID"];
@@ -249,6 +251,7 @@ class BrowserStorage {
 					break;
 			}
 			sessionStorage.setItem(table.name, JSON.stringify(array));
+			onSucess();
 		}
 		catch (error) {
 			console.error(error + "\nItem in DB is probably already deleted.");
