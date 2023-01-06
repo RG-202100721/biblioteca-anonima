@@ -54,7 +54,7 @@ BS.getAdmin(); //retorna o nome do admin em string normal
 //-------------------------------------------------------------------------------------------------------
 
 //exemplos de uso dos métodos do script DB/authentication.js (Pedidos de autenticação à API). 
-//utilizem estas funções para mostrar entrar/sair na zona de admin
+//utilizem estas funções para entrar/sair da zona de admin
 
 var AR = new AuthRequest();
 
