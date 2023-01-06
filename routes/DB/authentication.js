@@ -26,46 +26,46 @@ router_auth.post("/login", (req, res) => {
                     expiresIn: JWT_Seconds
                 });
                 res.cookie('token', token, { maxAge: JWT_Seconds * 1000 })
-                res.status(200).json({ message: `Cool, ${result[i]["Nome"]} has logged in.` });
+                res.status(200).json({ message: `Cool, ${result[i]["Nome"]} has logged in.`, name: result[i]["Nome"] });
             }
         }
 	});
 });
-router_auth.get("/refresh", checkAuth, (req, res) => {
-    var data = req.body["token"];
-
-    if (data["exp"] - Math.round(Number(new Date()) / 1000) > 30) res.status(401).json({ message: 'Token has expired.' });
-    else {
-        const newToken = JWT.sign({ "Nome": data["Nome"] }, JWT_Key, {
-            algorithm: 'HS256',
-            expiresIn: JWT_Seconds
-        });
-        
-        res.cookie('token', newToken, { maxAge: JWT_Seconds * 1000 });
-        res.status(200).json({ message: 'Token refreshed.' });
-    }
-});
 router_auth.get("/logout", checkAuth, (req, res) => {
     res.cookie('token', '', { maxAge: 0 })
-    res.status(200).json({ message: `Cool, ${result[i]["Nome"]} has logged out.` });
+    res.status(200).json({ message: `Cool, ${req.body["admin"]} has logged out.` });
 });
 
 //verifica se o administrador está autenticado
 function checkAuth(req, res, next) {
-    const token = req.cookies.token;
+    const token = req.cookies["token"];
     if (token == undefined) res.status(401).json({ message: 'Não tem acesso.\nNão está autenticado.' });
     else {
         var data;
         try { data = JWT.verify(token, JWT_Key); } 
         catch (error) {
             if (error instanceof JWT.JsonWebTokenError) res.status(401).json({ message: error });
-            else res.status(400).json({ message: error });
+            else res.status(500).json({ message: error });
         }
         if (data["Nome"] != "") {
-            if (req.url == "/refresh") req.body["token"] = data;
+            refreshToken(data, res);
+            req.body["admin"] = data["Nome"];
             next();
         }
-        else res.status(401).json({ message: 'Token has probably expired.' });
+        else res.status(401).json({ message: 'A sua sessão expirou.\nToken da sessão expirou.' });
+    }
+}
+
+//cria novo token e cookie com uma nova data de validade, se estiver a 30 segundos de expirar
+function refreshToken(data, res) {
+    var exp_seconds = data["exp"] - Math.round(Number(new Date()) / 1000);
+
+    if (exp_seconds < 30) {
+        const newToken = JWT.sign({ "Nome": data["Nome"] }, JWT_Key, {
+            algorithm: 'HS256',
+            expiresIn: JWT_Seconds
+        });
+        res.cookie('token', newToken, { maxAge: JWT_Seconds * 1000 });
     }
 }
 

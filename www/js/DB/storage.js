@@ -256,9 +256,7 @@ class BrowserStorage {
 	}
 
 	getAdmin() {
-		//get cookies and find 'token'
-		//get name of admin
-		return document.cookie;
+		return sessionStorage.getItem("Admin");
 	}
 
 	reset() {

@@ -1,8 +1,5 @@
 //processamento dos pedidos CRUD para a nossa API utilizando a API Fetch
 
-var BS = new BrowserStorage();
-var AR = new AuthRequest();
-
 class DatabaseRequest {
 
     getAllDB(onSuccess, onError) {
@@ -10,7 +7,7 @@ class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(result => {
-                    BS.copyToSessionStorage(result, () => onSuccess());
+                    new BrowserStorage().copyToSessionStorage(result, () => onSuccess());
                 });
             else res.json().then(message => { onError(JSON.stringify(message)) });
         });
@@ -29,10 +26,10 @@ class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
-                        BS.addSessionStorage(JSON.parse(data));
+                        new BrowserStorage().addSessionStorage(JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
-                else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+                else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
                 else res.json().then(message => { onError(JSON.stringify(message)); });
             });
         }
@@ -52,10 +49,10 @@ class DatabaseRequest {
             .then(res => {
                 if (res.status == 200) 
                     res.json().then(message => {
-                        BS.updateSessionStorage(JSON.parse(data));
+                        new BrowserStorage().updateSessionStorage(JSON.parse(data));
                         onSuccess(JSON.stringify(message));
                     });
-                else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+                else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
                 else res.json().then(message => { onError(JSON.stringify(message)); });
             });
         }
@@ -75,10 +72,10 @@ class DatabaseRequest {
         .then(res => {
             if (res.status == 200) 
                 res.json().then(message => {
-                    BS.deleteSessionStorage(JSON.parse(data));
+                    new BrowserStorage().deleteSessionStorage(JSON.parse(data));
                     onSuccess(JSON.stringify(message));
                 });
-            else if (res.status == 401) res.json().then(message => { AR.noPermission(message["message"]); });
+            else if (res.status == 401) res.json().then(message => { new AuthRequest().noPermission(message["message"]); });
             else res.json().then(message => { onError(JSON.stringify(message)); });
         });
     }
