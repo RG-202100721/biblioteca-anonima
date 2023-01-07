@@ -107,27 +107,8 @@ class BrowserStorage {
 					break;
 
 				case DatabaseTables.LIVRO:
-					let authors = new Array();
-					this.getAuthors().forEach(author => {
-						data["IDAutores"].forEach(rowId => {
-							if (rowId == author["ID"])
-								authors.push({
-									"ID": rowId,
-									"Nome": author["Nome"]
-								});
-						});
-					});
-
-					let categories = new Array();
-					this.getCategories().forEach(category => {
-						data["IDCategorias"].forEach(rowId => {
-							if (rowId == category["ID"])
-								categories.push({
-									"ID": rowId,
-									"Nome": category["Nome"]
-								});
-						});
-					});
+					let authors = this.getContent(data, this.getAuthors(), "IDAutores");
+					let categories = this.getContent(data, this.getCategories(), "IDCategorias");
 
 					array = this.getBooks();
 					for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
@@ -181,27 +162,8 @@ class BrowserStorage {
 					break;
 
 				case DatabaseTables.LIVRO:
-					let authors = new Array();
-					this.getAuthors().forEach(author => {
-						data["IDAutores"].forEach(rowId => {
-							if (rowId == author["ID"])
-								authors.push({
-									"ID": rowId,
-									"Nome": author["Nome"]
-								});
-						});
-					});
-
-					let categories = new Array();
-					this.getCategories().forEach(category => {
-						data["IDCategorias"].forEach(rowId => {
-							if (rowId == category["ID"])
-								categories.push({
-									"ID": rowId,
-									"Nome": category["Nome"]
-								});
-						});
-					});
+					let authors = this.getContent(data, this.getAuthors(), "IDAutores");
+					let categories = this.getContent(data, this.getCategories(), "IDCategorias");
 
 					array = this.getBooks();
 					array[array.map(i => i["ID"]).indexOf(id)] = {
@@ -256,6 +218,20 @@ class BrowserStorage {
 		catch (error) {
 			console.error(error + "\nItem in DB is probably already deleted.");
 		}
+	}
+
+	getContent(data, origin, tag) {
+		let array = new Array();
+		origin.forEach(item => {
+			data[tag].forEach(rowId => {
+				if (rowId == item["ID"])
+					array.push({
+						"ID": rowId,
+						"Nome": item["Nome"]
+					});
+				});
+		});
+		return array;
 	}
 
 	getAdmin() {
