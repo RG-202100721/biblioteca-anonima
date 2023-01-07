@@ -22,9 +22,13 @@ class DatabaseTables {
                     break;
 
                 case DatabaseTables.AUTOR:
-                case DatabaseTables.EDITORA:
-                    text += "Campos JSON para a tabela \"Autor\" e \"Editora\" são:\nNome [String]\nPais [String]";
+                    text += "Campos JSON para a tabela \"Autor\" são:\nNome [String]\nPais [String]";
                     if (this.getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") pass = true;
+                    break;
+
+                case DatabaseTables.EDITORA:
+                    text += "Campos JSON para a tabela \"Editora\" são:\nNome [String]\nPais [String]\nLogo [String]";
+                    if (this.getLengthOfObject(data) == 3 && data["Nome"] != "" && data["Pais"] != "" && data["Logo"] != "") pass = true;
                     break;
 
                 case DatabaseTables.LIVRO:
@@ -41,6 +45,7 @@ class DatabaseTables {
                         }
                     }
                     break;
+                    
                 case DatabaseTables.ADMIN:
                     text += "Campos JSON para fazer o login são:\nNumero_Conta [int]\nPassword [String]";
                     if (this.getLengthOfObject(data) == 2 && data["Numero_Conta"] > 0 && data["Password"] != "") pass = true;

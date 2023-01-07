@@ -94,14 +94,24 @@ class BrowserStorage {
 					break;
 
 				case DatabaseTables.AUTOR:
-				case DatabaseTables.EDITORA:
-					if (table == DatabaseTables.AUTOR) array = this.getAuthors();
-					else array = this.getPublishers();
+					array = this.getAuthors();
 					for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
 					array.push({
 						"ID": id,
 						"Nome": data["Nome"],
 						"Pais": data["Pais"]
+					});
+					array.sort((a, b) => a["ID"] - b["ID"]);
+					break;
+
+				case DatabaseTables.EDITORA:
+					array = this.getPublishers();
+					for (id = 1; id - 1 < Object.keys(array).length; id++) if (array[id - 1]["ID"] != id) break;
+					array.push({
+						"ID": id,
+						"Nome": data["Nome"],
+						"Pais": data["Pais"],
+						"Logo": data["Logo"]
 					});
 					array.sort((a, b) => a["ID"] - b["ID"]);
 					break;
@@ -151,13 +161,21 @@ class BrowserStorage {
 					break;
 
 				case DatabaseTables.AUTOR:
-				case DatabaseTables.EDITORA:
-					if (table == DatabaseTables.AUTOR) array = this.getAuthors();
-					else array = this.getPublishers();
+					array = this.getAuthors();
 					array[array.map(i => i["ID"]).indexOf(id)] = {
 						"ID": id,
 						"Nome": data["Nome"],
 						"Pais": data["Pais"]
+					};
+					break;
+
+				case DatabaseTables.EDITORA:
+					array = this.getPublishers();
+					array[array.map(i => i["ID"]).indexOf(id)] = {
+						"ID": id,
+						"Nome": data["Nome"],
+						"Pais": data["Pais"],
+						"Logo": data["Logo"]
 					};
 					break;
 
@@ -195,23 +213,12 @@ class BrowserStorage {
 		let id = data["ID"];
 		try {
 			switch (table) {
-				case DatabaseTables.CATEGORIA:
-					array = this.getCategories();
-					array.splice(array.map(i => i["ID"]).indexOf(id), 1);
-					break;
-
-				case DatabaseTables.AUTOR:
-				case DatabaseTables.EDITORA:
-					if (table == DatabaseTables.AUTOR) array = this.getAuthors();
-					else array = this.getPublishers();
-					array.splice(array.map(i => i["ID"]).indexOf(id), 1);
-					break;
-
-				case DatabaseTables.LIVRO:
-					array = this.getBooks();
-					array.splice(array.map(i => i["ID"]).indexOf(id), 1);
-					break;
+				case DatabaseTables.CATEGORIA: array = this.getCategories(); break;
+				case DatabaseTables.AUTOR: array = this.getAuthors(); break;
+				case DatabaseTables.EDITORA: array = this.getPublishers(); break;
+				case DatabaseTables.LIVRO: array = this.getBooks(); break;
 			}
+			array.splice(array.map(i => i["ID"]).indexOf(id), 1);
 			sessionStorage.setItem(table.name, JSON.stringify(array));
 			onSucess();
 		}

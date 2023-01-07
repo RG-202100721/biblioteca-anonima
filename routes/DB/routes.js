@@ -53,8 +53,8 @@ router_DB.post("/create", checkAuth, (req, res) => {
             }
             else {
                 switch (req.body["Tabela"]) {
-                    case "Autor":
-                    case "Editora": sql += `(${id}, '${req.body["Nome"]}', '${req.body["Pais"]}');`; break;
+                    case "Autor": sql += `(${id}, '${req.body["Nome"]}', '${req.body["Pais"]}');`; break;
+                    case "Editora": sql += `(${id}, '${req.body["Nome"]}', '${req.body["Pais"]}', '${req.body["Logo"]}');`; break;
                     default: sql += `(${id}, '${req.body["Nome"]}');`; break;
                 }
                 DB.query(sql, (err, result) => {
@@ -116,8 +116,8 @@ router_DB.put("/edit", checkAuth, (req, res) => {
     }
     else {
         switch (req.body["Tabela"]) {
-            case "Autor":
-            case "Editora": sql += `Nome = '${req.body["Nome"]}', Pais = '${req.body["Pais"]}'`; break;
+            case "Autor": sql += `Nome = '${req.body["Nome"]}', Pais = '${req.body["Pais"]}'`; break;
+            case "Editora": sql += `Nome = '${req.body["Nome"]}', Pais = '${req.body["Pais"]}', Logo = '${req.body["Logo"]}'`; break;
             default: sql += `Nome = '${req.body["Nome"]}'`; break;
         }
         sql += ` WHERE ID = ${req.body["ID"]};`
