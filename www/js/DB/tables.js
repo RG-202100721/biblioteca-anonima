@@ -12,36 +12,83 @@ class DatabaseTables {
 	}
 
 	checkJSON(table, data) {
-        var pass = false;
+        var pass = false, conflict = false;
+        var BS = new BrowserStorage();
         var text = "Campos ou valores do objeto JSON estão errados.\n";
         try {
             switch (table) {
                 case DatabaseTables.CATEGORIA:
-                    text += "Campo JSON para a tabela \"Categoria\" é:\nNome [String]";
-                    if (this.getLengthOfObject(data) == 1 && data["Nome"] != "") pass = true;
+                    text += "Campo JSON para a tabela \"Categoria\" é:\nNome [String] - UNIQUE";
+                    if (this.getLengthOfObject(data) == 1 && data["Nome"] != "") {
+                        BS.getCategories().forEach(elmt => {
+                            if (elmt["Nome"] == data["Nome"]) conflict = true;
+                        });
+                        if (conflict == false) pass = true;
+                    }
                     break;
 
                 case DatabaseTables.AUTOR:
-                    text += "Campos JSON para a tabela \"Autor\" são:\nNome [String]\nPais [String]";
-                    if (this.getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") pass = true;
+                    text += "Campos JSON para a tabela \"Autor\" são:\nNome [String] - UNIQUE\nPais [String]";
+                    if (this.getLengthOfObject(data) == 2 && data["Nome"] != "" && data["Pais"] != "") {
+                        BS.getAuthors().forEach(elmt => {
+                            if (elmt["Nome"] == data["Nome"]) conflict = true;
+                        });
+                        if (conflict == false) pass = true;
+                    }
                     break;
 
                 case DatabaseTables.EDITORA:
-                    text += "Campos JSON para a tabela \"Editora\" são:\nNome [String]\nPais [String]\nLogo [String]";
-                    if (this.getLengthOfObject(data) == 3 && data["Nome"] != "" && data["Pais"] != "" && data["Logo"] != "") pass = true;
+                    text += "Campos JSON para a tabela \"Editora\" são:\nNome [String] - UNIQUE\nPais [String]\nLogo [String] - UNIQUE";
+                    if (this.getLengthOfObject(data) == 3 && data["Nome"] != "" && data["Pais"] != "" && data["Logo"] != "") {
+                        BS.getPublishers().forEach(elmt => {
+                            if (elmt["Nome"] == data["Nome"] || elmt["Logo"] == data["Logo"]) conflict = true;
+                        });
+                        if (conflict == false) pass = true;
+                    }
                     break;
 
                 case DatabaseTables.LIVRO:
-                    text += "Campos JSON para a tabela \"Livro\" são:\nTitulo [String]\nISBN [String]\nNumero_Paginas [int]\nIDEditora [int]\nCapa [String]\nIDAutores [Array JSON de ints]\nIDCategorias [Array JSON de ints]";
+                    text += "Campos JSON para a tabela \"Livro\" são:\nTitulo [String] - UNIQUE\nISBN [String] - UNIQUE\nNumero_Paginas [int]\nIDEditora [int]\nCapa [String] - UNIQUE\nIDAutores [Array JSON de ints]\nIDCategorias [Array JSON de ints]";
                     if (this.getLengthOfObject(data) == 7 && data["Titulo"] != "" && data["ISBN"] != "" && data["Numero_Paginas"] > 0 && data["IDEditora"] > 0 && data["Capa"] != "") {
-                        var autores = data["IDAutores"];
-                        var categorias = data["IDCategorias"];
-                        if (autores.length > 0 && categorias.length > 0) {
-                            for (var i = 0; i < autores.length; i++) 
-								if (autores[i] <= 0) throw "DB row index 0 or below";
-                            for (var i = 0; i < categorias.length; i++)
-                            	if (categorias[i] <= 0) throw "DB row index 0 or below";
-                            pass = true;
+                        BS.getBooks().forEach(elmt => {
+                            if (elmt["Titulo"] == data["Titulo"] || elmt["ISBN"] == data["ISBN"] || elmt["Capa"] == data["Capa"]) conflict = true;
+                        });
+                        if (conflict == false) {
+                            var ForEachBreak = {};
+                            try {
+                                BS.getPublishers().forEach(elmt => { if (elmt["ID"] == data["IDEditora"]) throw ForEachBreak; });
+                                conflict = true;
+                            } 
+                            catch (error) {}
+                            if (conflict == false) {
+                                var autores = data["IDAutores"];
+                                var categorias = data["IDCategorias"];
+                                if (autores.length > 0 && categorias.length > 0) {
+                                    var trial = BS.getAuthors();
+                                    for (var i = 0; i < autores.length; i++) {
+                                        if (autores[i] <= 0) throw "DB row index 0 or below";
+                                        try {
+                                            trial.forEach(elmt => { if (elmt["ID"] == autores[i]) throw ForEachBreak; });
+                                            conflict = true;
+                                        } 
+                                        catch (error) {}
+                                        if (conflict == true) break;
+                                    }
+                                    if (conflict == false) {
+                                        trial = BS.getCategories();
+                                        for (var i = 0; i < categorias.length; i++) {
+                                            if (categorias[i] <= 0) throw "DB row index 0 or below";
+                                            try {
+                                                trial.forEach(elmt => { if (elmt["ID"] == categorias[i]) throw ForEachBreak; });
+                                                conflict = true;
+                                            } 
+                                            catch (error) {}
+                                            if (conflict == true) break;
+                                        }
+                                        if (conflict == false) pass = true;
+                                    }
+                                }
+                            }
                         }
                     }
                     break;
@@ -62,7 +109,6 @@ class DatabaseTables {
     errorJSON(text, e) {
         if (e == null) console.error(text);
         else console.error(e + "\n" + text);
-		alert("JSON está errado.\nPara detalhes:\n[F12 -> Console]");
     }
 
     getLengthOfObject(object) {
