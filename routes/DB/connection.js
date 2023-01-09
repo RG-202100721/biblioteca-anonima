@@ -4,22 +4,13 @@ const mysql = require('mysql');
 //criação da conexão ao servidor mysql
 exports.start = () => {
     var dbconfig = {
-        /*
-        connectionLimit: 100,
-        host: "localhost",
-        port: 3306,
-        database: "prog_info_projeto",
-        user: "root",
-        password: "",
-        multipleStatements: true
-        */
         //credenciais do servidor mysql
         connectionLimit: 100,
-        host: "remotemysql.com",
+        host: "sql7.freemysqlhosting.net",
         port: 3306,
-        database: "yOVZXrSpNL",
-        user: "yOVZXrSpNL",
-        password: "MvHQ1igl7N",
+        database: "sql7589168",
+        user: "sql7589168",
+        password: "SN9tWqqBQP",
         multipleStatements: true
     };
 
